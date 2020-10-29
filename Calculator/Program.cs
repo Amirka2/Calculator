@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 
 namespace Calculator
 {
@@ -59,7 +61,7 @@ namespace Calculator
                 check = false;
             return check;
         }
-        static void Calculation(string[] input)
+        static double Calculation(string[] input)
         {
             double result = 0;
             if (SignCheck(input))
@@ -74,15 +76,17 @@ namespace Calculator
                     result = Convert.ToDouble(input[0]) / Convert.ToDouble(input[2]);
                 else if (input[1] == "%")
                     result = Convert.ToDouble(input[0]) % Convert.ToDouble(input[2]);
-                Console.WriteLine(result);
+                Console.WriteLine("Результат = " + result);
             }
             else
             {
                 Console.WriteLine("Некорректный ввод!");
             }
+
+            return result;
         }
 
-        static void Main(string[] args)
+        static void Start()
         {
             Console.WriteLine("Ввод с консоли: 1 \nВвод с файла: 2");
             var option = Console.ReadLine();
@@ -96,8 +100,7 @@ namespace Calculator
                     if (!Check(elements))
                     {
                         Console.WriteLine("Некорректный ввод!");
-                        input = Read();
-                        elements = Transformation(input);
+                        elements = Transformation(Read());
                     }
                     else
                         Calculation(elements);
@@ -105,8 +108,26 @@ namespace Calculator
             }
             else if (option == "2")
             {
-
+                using (var sr = new StreamReader(@"input.txt", true))                            // создание объекта и автоматическое закрытие методом dispose
+                {
+                    var input = sr.ReadLine();
+                    
+                    using (var sw = new StreamWriter(@"output.txt", true))
+                    {
+                        Console.WriteLine("Результат в текстовом документе. Путь: Calculator/bin/Debug/output.txt");
+                        sw.WriteLine(Calculation(Transformation(input)));
+                    }
+                }
             }
+            else
+            {
+                Console.WriteLine("Выберите одно из двух!");
+                Start();
+            }
+        }
+        static void Main(string[] args)
+        {
+           Start();
         }
     }
 }
