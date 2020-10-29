@@ -6,10 +6,6 @@ namespace Calculator
 {
     class Program
     {
-        public Program()
-        {
-        }
-
         static string Read()
         {
             Console.Write("Введите выражение: ");
