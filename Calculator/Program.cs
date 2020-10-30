@@ -17,7 +17,7 @@ namespace Calculator
         {
             if(elements[1] == "/" && elements[2] == "0")
                 return false;
-            else if(elements.Length < 3)                            //проверка работает некорректно
+            else if(elements.Length < 3)
                 return false;
             
             bool check = true;
