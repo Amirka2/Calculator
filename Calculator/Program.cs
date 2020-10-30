@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 
@@ -15,17 +15,21 @@ namespace Calculator
 
         static bool Check(string[] elements)
         {
-            if(elements[1] == "/" && elements[2] == "0")
+            if (elements.Length < 3)
+            {
                 return false;
-            else if(elements.Length < 3)
+            }
+            else if (elements[1] == "/" && elements[2] == "0")
+            {
                 return false;
-            
+            }
+
             bool check = true;
             double c;
 
             foreach(var el in elements)
             {
-                if((el == "+") || (el == "-") || (el == "*") || (el == "/"))
+                if((el == "+") || (el == "-") || (el == "*") || (el == "/") || (el == "%"))
                     continue;
                 check = Double.TryParse(el, out c);
                 if(!check)
@@ -60,7 +64,11 @@ namespace Calculator
         static double Calculation(string[] input)
         {
             double result = 0;
-            if (SignCheck(input))
+            if (!Check(input))
+            {
+                Console.WriteLine("Некорректный ввод!");
+            }
+            else if (SignCheck(input))
             {
                 if (input[1] == "+")
                     result = Convert.ToDouble(input[0]) + Convert.ToDouble(input[2]);
@@ -73,10 +81,6 @@ namespace Calculator
                 else if (input[1] == "%")
                     result = Convert.ToDouble(input[0]) % Convert.ToDouble(input[2]);
                 Console.WriteLine("Результат = " + result);
-            }
-            else
-            {
-                Console.WriteLine("Некорректный ввод!");
             }
 
             return result;
